@@ -1,15 +1,19 @@
 #include<time.h>
 
+#ifndef INCLUDE_BOOL
+#include <stdbool.h>
+#define INCLUDE_BOOL
+#endif
 
 typedef struct {
 	time_t time_elapsed;
 	time_t time_start;
+	bool timer_started;
 } timer_struct;
 
-static time_t timer_threshold_time = 3;
+//time_t timer_threshold_time = 3;
 
-static timer_struct timer;
-
+timer_struct timer;
 
 void timer_reset();
 
@@ -17,4 +21,10 @@ void timer_start();
 
 void timer_update();
 
-time_t timer_get_time();
+time_t timer_get_time_start();
+
+time_t timer_get_time_elapsed();
+
+//time_t timer_get_threshold_time();
+
+bool timer_get_timer_started();

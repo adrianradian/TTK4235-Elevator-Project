@@ -41,3 +41,5 @@ bool elevator_FSM_order_exists_in_same_dir();
 bool elevator_FSM_should_stop();
 
 elev_motor_direction_t elevator_FSM_direction_of_order();
+
+void elevator_FSM_init_lights();

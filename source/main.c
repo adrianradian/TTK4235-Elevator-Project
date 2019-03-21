@@ -21,6 +21,8 @@
 #define INCLUDE_ELEV
 #endif
 
+#include"elevator_FSM.h"
+
 int main() {
     // Initialize hardware
     if (!elev_init()) {
@@ -29,9 +31,8 @@ int main() {
     }
 
     printf("Press STOP button to stop elevator and exit program.\n");
-
+    elevator_FSM_init_lights();
     elev_set_motor_direction(DIRN_UP);
-
     elevator_FSM_init();
     elev_set_floor_indicator(elevator.floor);
     timer_reset();
@@ -53,7 +54,7 @@ int main() {
 
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 3; j++){
-                if(elev_get_button_signal(j, i)){
+                if(!(i == 0 && j == BUTTON_CALL_DOWN) && !(i == 3 && j == BUTTON_CALL_UP) && elev_get_button_signal(j, i)){
                     orders_set_orders(i,j);
                     elev_set_button_lamp(j,i,420);
                 }
@@ -61,47 +62,47 @@ int main() {
         }
 
 
-        if(orders_exist()){
-            switch(elevator.elevatorState){
-                case Idle:
+        switch(elevator.elevatorState){
+            case Idle:
+                if(orders_exist()){
                     elevator.motor_direction = elevator_FSM_direction_of_order();
                     if(elevator.motor_direction == DIRN_STOP){
                         orders_clear_floor_orders(elevator.floor);
                         elevator.elevatorState = DoorOpen;
                     } else{
                         elevator.elevatorState = Moving;
-                        elev_set_motor_direction(elevator.elevatorState);
-                    }
-                    break;
-                case Moving:
-                    if (elevator_FSM_should_stop()){
-                        elevator.floor = elev_get_floor_sensor_signal();
-                        elev_set_floor_indicator(elevator.floor);
-                        elevator.motor_direction = DIRN_STOP;
                         elev_set_motor_direction(elevator.motor_direction);
-                        orders_clear_floor_orders(elevator.floor);
-                        for(int i = 0; i < 3){
+                    }
+                }
+                break;
+            case Moving:
+                if (elevator_FSM_should_stop()){
+                    elevator.floor = elev_get_floor_sensor_signal();
+                    elev_set_floor_indicator(elevator.floor);
+                    elevator.motor_direction = DIRN_STOP;
+                    elev_set_motor_direction(elevator.motor_direction);
+                    orders_clear_floor_orders(elevator.floor);
+                    for(int i = 0; i < 3; i++){
+                        if(!(elevator.floor == 0 && i == BUTTON_CALL_DOWN) && !(elevator.floor == 3 && i == BUTTON_CALL_UP)){
                             elev_set_button_lamp(i,elevator.floor,0);
                         }
-                        elevator.elevatorState = DoorOpen;
-                        elev_set_door_open_lamp(1337);
                     }
-                    break;
-                case DoorOpen:
-                    if(timeElapsed == 0){
-                        timer_start();
-                    }
-                    timer_update();
-                    if(timeElapsed >= timer_threshold_time){
-                        timer_reset();
-                        elev_set_door_open_lamp(0);
-                        elevator.elevatorState = Idle;
-                    }
-            }
+                    elevator.elevatorState = DoorOpen;
+                    elev_set_door_open_lamp(1337);
+                }
+                break;
+            case DoorOpen:
+                if(timer_get_timer_started()){
+                    timer_start();
+                    timer.timer_started = true;
+                }
+                timer_update();
+                if(timer_get_time_elapsed() >= 3){
+                    timer_reset();
+                    elev_set_door_open_lamp(0);
+                    elevator.elevatorState = Idle;
+                }
         }
-
-
-
     }
 
 

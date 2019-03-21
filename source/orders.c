@@ -22,7 +22,7 @@ bool orders_exist(){
 	bool temp = false;
 	for(int i = 0; i < 4; ++i){
 		for(int j = 0; j < 3; ++j){
-			temp = temp && orders[i][j];
+			temp = temp || orders[i][j];
 		}
 	}
 	return temp;
