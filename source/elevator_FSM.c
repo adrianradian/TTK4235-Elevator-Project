@@ -2,10 +2,10 @@
 
 void elevator_FSM_init(){
 	while(elev_get_floor_sensor_signal() == -1);
-	elevator.floor = elev_get_floor_sensor_signal();
-	elevator.elevatorState = Idle;
 	elevator.motor_direction = DIRN_STOP;
 	elev_set_motor_direction(elevator.motor_direction);
+	elevator.elevatorState = Moving;
+	elevator.floor = elev_get_floor_sensor_signal();
 }
 
 bool elevator_FSM_order_exists_in_same_dir(){
@@ -21,12 +21,12 @@ bool elevator_FSM_order_exists_in_same_dir(){
 }
 
 bool elevator_FSM_should_stop(){
-	return ((elev_get_floor_sensor_signal() != -1) && orders_get(elev_get_floor_sensor_signal(),elevator.motor_direction));
+	return ((elev_get_floor_sensor_signal() != -1) && orders_get(elev_get_floor_sensor_signal(),elevator_FSM_direction_to_button_type(elevator.motor_direction)));
 }
 
 elev_motor_direction_t elevator_FSM_direction_of_order(){
 	for(int i = 0; i < 4; ++i){
-		if(orders_get(i, BUTTON_CALL_UP) || orders_get(i,BUTTON_CALL_DOWN)){
+		if(orders_get(i, BUTTON_CALL_UP) || orders_get(i, BUTTON_CALL_DOWN)){
 			if(i < elevator.floor){
 				return DIRN_DOWN;
 			} else if(i > elevator.floor){
@@ -46,4 +46,15 @@ void elevator_FSM_init_lights(){
 		}
 	}
 	elev_set_door_open_lamp(0);
+}
+
+elev_button_type_t elevator_FSM_direction_to_button_type(elev_motor_direction_t input){
+	switch(input){
+		case DIRN_DOWN:
+			return BUTTON_CALL_DOWN;
+		case DIRN_UP:
+			return BUTTON_CALL_UP;
+		default:
+			return BUTTON_CALL_DOWN;
+	}
 }

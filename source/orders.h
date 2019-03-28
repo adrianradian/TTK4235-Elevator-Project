@@ -9,7 +9,7 @@
 #endif
 
 
-static bool orders[4][3];
+bool orders[4][3];
 
 void orders_init();
 

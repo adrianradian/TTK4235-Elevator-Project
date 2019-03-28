@@ -1,4 +1,4 @@
-SOURCES := main.c elev.c io.c
+SOURCES := main.c elev.c io.c orders.c elevator_FSM.c timer.c
 
 BUILD_DIR := build
 OBJ := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
@@ -6,8 +6,8 @@ OBJ := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 SRC_DIR := source
 SRC := $(SOURCES:%.c=$(SRC_DIR)/%.c)
 
-CC := gcc
-CFLAGS := -O0 -g3 -Wall -Werror -std=gnu99
+CC := clang
+CFLAGS := -O0 -g3 -g -Wall -Werror -std=gnu99
 
 LDFLAGS := -lcomedi -lm
 
