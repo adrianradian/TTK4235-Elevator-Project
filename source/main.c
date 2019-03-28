@@ -32,16 +32,16 @@ int main() {
 
 
     elevator_FSM_init();
-    elev_set_floor_indicator(elevator.floor);
+    elev_set_floor_indicator(elevator_FSM_get_floor());
     timer_reset();
     orders_init();
 
     while (1) {
         // Change direction when we reach top/bottom floor
         /*
-        if (elev_get_floor_sensor_signal() == N_FLOORS - 1) {
+        if ((elev_get_floor_sensor_signal() == N_FLOORS - 1) && !(orders_get(N_FLOORS - 1, BUTTON_CALL_DOWN))) {
             elev_set_motor_direction(DIRN_DOWN);
-        } else if (elev_get_floor_sensor_signal() == 0) {
+        } else if ((elev_get_floor_sensor_signal() == 0) && !(orders_get(0, BUTTON_CALL_UP))) {
             elev_set_motor_direction(DIRN_UP);
         }
         */
@@ -62,32 +62,32 @@ int main() {
         }
 
 
-        switch(elevator.elevatorState){
+        switch(elevator_FSM_get_state()){
             case Idle:
                 if(orders_exist()){
-                    elevator.motor_direction = elevator_FSM_direction_of_order();
-                    if(elevator.motor_direction == DIRN_STOP){
-                        orders_clear_floor_orders(elevator.floor);
-                        elevator.elevatorState = DoorOpen;
+                    elevator_FSM_set_direction(elevator_FSM_direction_of_order());
+                    if(elevator_FSM_get_direction() == DIRN_STOP){
+                        orders_clear_floor_orders(elevator_FSM_get_floor());
+                        elevator_FSM_set_state(DoorOpen);
                     } else{
-                        elevator.elevatorState = Moving;
-                        elev_set_motor_direction(elevator.motor_direction);
+                        elevator_FSM_set_state(Moving);
+                        elev_set_motor_direction(elevator_FSM_get_direction());
                     }
                 }
                 break;
             case Moving:
                 if (elevator_FSM_should_stop()){
-                    elevator.motor_direction = DIRN_STOP;
-                    elev_set_motor_direction(elevator.motor_direction);
-                    elevator.floor = elev_get_floor_sensor_signal();
-                    elev_set_floor_indicator(elevator.floor);
-                    orders_clear_floor_orders(elevator.floor);
+                    elevator_FSM_set_direction(DIRN_STOP);
+                    elev_set_motor_direction(elevator_FSM_get_direction());
+                    elevator_FSM_set_floor(elev_get_floor_sensor_signal());
+                    elev_set_floor_indicator(elevator_FSM_get_floor());
+                    orders_clear_floor_orders(elevator_FSM_get_floor());
                     for(int i = 0; i < 3; i++){
-                        if(!(elevator.floor == 0 && i == BUTTON_CALL_DOWN) && !(elevator.floor == 3 && i == BUTTON_CALL_UP)){
-                            elev_set_button_lamp(i,elevator.floor,0);
+                        if(!(elevator_FSM_get_floor() == 0 && i == BUTTON_CALL_DOWN) && !(elevator_FSM_get_floor() == 3 && i == BUTTON_CALL_UP)){
+                            elev_set_button_lamp(i,elevator_FSM_get_floor(),0);
                         }
                     }
-                    elevator.elevatorState = DoorOpen;
+                    elevator_FSM_set_state(DoorOpen);
                     elev_set_door_open_lamp(1337);
                 }
                 break;
@@ -100,7 +100,7 @@ int main() {
                 if(timer_get_time_elapsed() >= 3){
                     timer_reset();
                     elev_set_door_open_lamp(0);
-                    elevator.elevatorState = Idle;
+                    elevator_FSM_set_state(Idle);
                 }
         }
     }

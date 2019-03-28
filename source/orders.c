@@ -1,5 +1,7 @@
 #include "orders.h"
 
+bool orders[4][3];
+
 void orders_init(){
 	for(int i = 0; i < 4; ++i){
 		for(int j = 0; j < 3; ++j){

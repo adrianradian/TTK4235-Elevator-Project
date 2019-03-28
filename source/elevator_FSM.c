@@ -1,10 +1,36 @@
 #include"elevator_FSM.h"
 
+elevatorStruct elevator;
+
+int elevator_FSM_get_floor(){
+	return elevator.floor;
+}
+
+state elevator_FSM_get_state(){
+	return elevator.elevatorState;
+}
+
+elev_motor_direction_t elevator_FSM_get_direction(){
+	return elevator.motor_direction;
+}
+
+void elevator_FSM_set_floor(int floor_in){
+	elevator.floor = floor_in;
+}
+
+void elevator_FSM_set_state(state state_in){
+	elevator.elevatorState = state_in;
+}
+
+void elevator_FSM_set_direction(elev_motor_direction_t direction_in){
+	elevator.motor_direction = direction_in;
+}
+
 void elevator_FSM_init(){
 	while(elev_get_floor_sensor_signal() == -1);
 	elevator.motor_direction = DIRN_STOP;
 	elev_set_motor_direction(elevator.motor_direction);
-	elevator.elevatorState = Moving;
+	elevator.elevatorState = Idle;
 	elevator.floor = elev_get_floor_sensor_signal();
 }
 
@@ -21,7 +47,23 @@ bool elevator_FSM_order_exists_in_same_dir(){
 }
 
 bool elevator_FSM_should_stop(){
-	return ((elev_get_floor_sensor_signal() != -1) && orders_get(elev_get_floor_sensor_signal(),elevator_FSM_direction_to_button_type(elevator.motor_direction)));
+	if((elev_get_floor_sensor_signal() != -1) && orders_get(elev_get_floor_sensor_signal(),elevator_FSM_direction_to_button_type(elevator.motor_direction))){
+		return true;
+	}/*else{
+		switch(elevator_FSM_get_direction()){
+			case DIRN_UP:
+				if(!orders_exist_above()){
+					return true;
+				}
+			case DIRN_DOWN:
+				if(!orders_exist_below()){
+					return true;
+				}
+			default:
+				return false;
+		}
+	}*/
+	return false;
 }
 
 elev_motor_direction_t elevator_FSM_direction_of_order(){
@@ -57,4 +99,28 @@ elev_button_type_t elevator_FSM_direction_to_button_type(elev_motor_direction_t 
 		default:
 			return BUTTON_CALL_DOWN;
 	}
+}
+
+bool orders_exist_above(){
+	if(elev_get_floor_sensor_signal() == 3){
+		return false;
+	}
+	for(int i = elev_get_floor_sensor_signal() + 1; i < 4; i++){
+		if(orders_get(i, BUTTON_CALL_DOWN) || orders_get(i, BUTTON_CALL_UP)){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool orders_exist_below(){
+	if(elev_get_floor_sensor_signal() == 0){
+		return false;
+	}
+	for(int i = elev_get_floor_sensor_signal() - 1; i > -1; i--){
+		if(orders_get(i, BUTTON_CALL_DOWN) || orders_get(i, BUTTON_CALL_UP)){
+			return true;
+		}
+	}
+	return false;
 }

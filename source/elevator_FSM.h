@@ -32,7 +32,18 @@ typedef struct{
 
 } elevatorStruct;
 
-elevatorStruct elevator;
+
+int elevator_FSM_get_floor();
+
+state elevator_FSM_get_state();
+
+elev_motor_direction_t elevator_FSM_get_direction();
+
+void elevator_FSM_set_floor(int floor_in);
+
+void elevator_FSM_set_state(state state_in);
+
+void elevator_FSM_set_direction(elev_motor_direction_t direction_in);
 
 void elevator_FSM_init();
 
@@ -45,3 +56,7 @@ elev_motor_direction_t elevator_FSM_direction_of_order();
 void elevator_FSM_init_lights();
 
 elev_button_type_t elevator_FSM_direction_to_button_type(elev_motor_direction_t input);
+
+bool orders_exist_above();
+
+bool orders_exist_below();
