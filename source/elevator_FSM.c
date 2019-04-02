@@ -1,4 +1,6 @@
 #include"elevator_FSM.h"
+#include<stdio.h>
+#include<assert.h>
 
 elevatorStruct elevator;
 
@@ -15,6 +17,10 @@ elev_motor_direction_t elevator_FSM_get_direction(){
 }
 
 void elevator_FSM_set_floor(int floor_in){
+	if (floor_in < 0 || floor_in > 3){
+		printf("HER SKJER FEILEN!!!!!!!!!!\n");
+		return;
+	}
 	elevator.floor = floor_in;
 }
 
@@ -24,6 +30,8 @@ void elevator_FSM_set_state(state state_in){
 
 void elevator_FSM_set_direction(elev_motor_direction_t direction_in){
 	elevator.motor_direction = direction_in;
+	printf("retning er %d inni elev_set_direction\n", elevator.motor_direction);
+	elev_set_motor_direction(elevator.motor_direction);
 }
 
 void elevator_FSM_init(){
@@ -47,22 +55,31 @@ bool elevator_FSM_order_exists_in_same_dir(){
 }
 
 bool elevator_FSM_should_stop(){
-	if((elev_get_floor_sensor_signal() != -1) && orders_get(elev_get_floor_sensor_signal(),elevator_FSM_direction_to_button_type(elevator.motor_direction))){
-		return true;
-	}/*else{
-		switch(elevator_FSM_get_direction()){
-			case DIRN_UP:
+	if(elev_get_floor_sensor_signal() != -1){
+		if(orders_get(elev_get_floor_sensor_signal(),elevator_FSM_direction_to_button_type(elevator_FSM_get_direction()))){
+			printf("elevator_should_stop gikk av på naivt tilfelle\n");
+			return true;
+		}else{
+			switch(elevator_FSM_get_direction()){
+				case DIRN_UP:
 				if(!orders_exist_above()){
+					printf("elevator_should_stop gikk av på dirn_up\n");
 					return true;
 				}
-			case DIRN_DOWN:
+				break;
+				case DIRN_DOWN:
 				if(!orders_exist_below()){
+					printf("elevator_should_stop gikk av på dirn_down\n");
 					return true;
 				}
-			default:
+				break;
+				default:
 				return false;
+			}
 		}
-	}*/
+	}else{
+		return false;
+	}
 	return false;
 }
 
@@ -79,7 +96,7 @@ elev_motor_direction_t elevator_FSM_direction_of_order(){
 	return DIRN_STOP;
 }
 
-void elevator_FSM_init_lights(){
+void elevator_FSM_clear_lights(){
 	for(int i = 0; i < 4; i++){
 		for(int j = 0; j < 3; j++){
 			if(!(i == 0 && j == BUTTON_CALL_DOWN) && !(i == 3 && j == BUTTON_CALL_UP)){

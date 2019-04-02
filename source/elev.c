@@ -10,6 +10,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 // Number of signals and lamps on a per-floor basis (excl sensor)
 #define N_BUTTONS 3
@@ -80,6 +81,10 @@ int elev_get_obstruction_signal(void) {
 }
 
 int elev_get_stop_signal(void) {
+    if (io_read_bit(STOP)){
+        printf("STOP SIER STOPPPPP!!!!!!!!!!!!!!!!!!!!!\n");
+    }
+    
     return io_read_bit(STOP);
 }
 

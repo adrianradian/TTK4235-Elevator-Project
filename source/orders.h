@@ -10,7 +10,7 @@
 
 
 
-void orders_init();
+void orders_clear_all();
 
 void orders_set_orders(int floor, elev_button_type_t type);
 
