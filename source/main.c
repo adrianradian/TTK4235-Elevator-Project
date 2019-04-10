@@ -72,7 +72,7 @@ int main() {
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 3; j++){
                 if(!(i == 0 && j == BUTTON_CALL_DOWN) && !(i == 3 && j == BUTTON_CALL_UP) && elev_get_button_signal(j, i)){
-                    orders_set_orders(i,j);
+                    orders_set_order(i,j);
                     elev_set_button_lamp(j,i,1);
                 }
             }
@@ -111,7 +111,7 @@ int main() {
                 }
                 break;
             case DoorOpen:
-                if(!timer_get_timer_started()){
+                if(!timer_get_is_timer_started()){
                     timer_start();
                     //timer.timer_started = true;
                 }
@@ -129,5 +129,3 @@ int main() {
 
     return 0;
 }
-
-

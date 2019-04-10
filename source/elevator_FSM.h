@@ -28,7 +28,7 @@ typedef enum{Idle = 0, Moving = 1, DoorOpen = 2} state;
 typedef struct{
 	int floor;
 	state elevatorState;
-	elev_motor_direction_t motor_direction;	
+	elev_motor_direction_t motor_direction;
 
 } elevatorStruct;
 
@@ -56,7 +56,3 @@ elev_motor_direction_t elevator_FSM_direction_of_order();
 void elevator_FSM_clear_lights();
 
 elev_button_type_t elevator_FSM_direction_to_button_type(elev_motor_direction_t input);
-
-bool orders_exist_above();
-
-bool orders_exist_below();

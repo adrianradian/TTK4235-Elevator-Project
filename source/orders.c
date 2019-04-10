@@ -10,7 +10,7 @@ void orders_clear_all(){
 	}
 }
 
-void orders_set_orders(int floor, elev_button_type_t type){ orders[floor][(int)type] = true; }
+void orders_set_order(int floor, elev_button_type_t button_type){ orders[floor][(int)button_type] = true; }
 
 void orders_clear_floor_orders(int floor){
 	for(int i = 0; i < 3; i++){

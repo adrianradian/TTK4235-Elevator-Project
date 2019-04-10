@@ -8,7 +8,7 @@
 typedef struct {
 	time_t time_elapsed;
 	time_t time_start;
-	bool timer_started;
+	bool is_timer_started;
 } timer_struct;
 
 //time_t timer_threshold_time = 3;
@@ -27,4 +27,4 @@ time_t timer_get_time_elapsed();
 
 //time_t timer_get_threshold_time();
 
-bool timer_get_timer_started();
+bool timer_get_is_timer_started();

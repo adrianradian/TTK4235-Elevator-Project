@@ -3,13 +3,13 @@
 void timer_reset(){
 	timer.time_start = 0;
 	timer.time_elapsed = 0;
-	timer.timer_started = false;
+	timer.is_timer_started = false;
 }
 
 void timer_start(){
 	timer.time_start = time(NULL);
 	timer.time_elapsed = 0;
-	timer.timer_started = true;
+	timer.is_timer_started = true;
 }
 
 void timer_update(){
@@ -25,8 +25,8 @@ time_t timer_get_time_elapsed(){
 	return timer.time_elapsed;
 }
 
-bool timer_get_timer_started(){
-	return timer.timer_started;
+bool timer_get_is_timer_started(){
+	return timer.is_timer_started;
 }
 
 /*time_t timer_get_threshold_time(){

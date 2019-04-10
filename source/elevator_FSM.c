@@ -4,6 +4,10 @@
 
 elevatorStruct elevator;
 
+bool order_exists_above();
+
+bool order_exists_below();
+
 int elevator_FSM_get_floor(){
 	return elevator.floor;
 }
@@ -62,13 +66,13 @@ bool elevator_FSM_should_stop(){
 		}else{
 			switch(elevator_FSM_get_direction()){
 				case DIRN_UP:
-				if(!orders_exist_above()){
+				if(!order_exists_above()){
 					printf("elevator_should_stop gikk av på dirn_up\n");
 					return true;
 				}
 				break;
 				case DIRN_DOWN:
-				if(!orders_exist_below()){
+				if(!order_exists_below()){
 					printf("elevator_should_stop gikk av på dirn_down\n");
 					return true;
 				}
@@ -118,7 +122,7 @@ elev_button_type_t elevator_FSM_direction_to_button_type(elev_motor_direction_t 
 	}
 }
 
-bool orders_exist_above(){
+bool order_exists_above(){
 	if(elev_get_floor_sensor_signal() == 3){
 		return false;
 	}
@@ -130,7 +134,7 @@ bool orders_exist_above(){
 	return false;
 }
 
-bool orders_exist_below(){
+bool order_exists_below(){
 	if(elev_get_floor_sensor_signal() == 0){
 		return false;
 	}
