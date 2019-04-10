@@ -5,26 +5,26 @@
 #define INCLUDE_BOOL
 #endif
 
+
+/** \struct timer_struct
+	\brief Struct representing the timer*/
 typedef struct {
 	time_t time_elapsed;
 	time_t time_start;
 	bool is_timer_started;
 } timer_struct;
 
-//time_t timer_threshold_time = 3;
-
-timer_struct timer;
-
+/** \brief Method for stopping and resetting the timer. Also works as initializing function*/
 void timer_reset();
 
+/** \brief Method for starting the timer*/
 void timer_start();
 
+/** \brief Method for updating the timer*/
 void timer_update();
 
-time_t timer_get_time_start();
-
+/** \brief Getter-function for time elapsed since timer was started*/
 time_t timer_get_time_elapsed();
 
-//time_t timer_get_threshold_time();
-
+/** \brief Method returning a bool signifying whether the timer is currently running*/
 bool timer_get_is_timer_started();

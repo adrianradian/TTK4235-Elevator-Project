@@ -62,10 +62,10 @@ int main() {
 
         // Change direction when we reach top/bottom floor
 
-        if ((elev_get_floor_sensor_signal() == N_FLOORS - 1) && !(orders_get(N_FLOORS - 1, BUTTON_CALL_DOWN)) && elevator_FSM_get_direction() == DIRN_UP) {
-        	printf("bestilling i 4.etasje: %d\n", orders_get(N_FLOORS-1, BUTTON_CALL_DOWN));
+        if ((elev_get_floor_sensor_signal() == N_FLOORS - 1) && !(orders_get_order(N_FLOORS - 1, BUTTON_CALL_DOWN)) && elevator_FSM_get_direction() == DIRN_UP) {
+        	printf("bestilling i 4.etasje: %d\n", orders_get_order(N_FLOORS-1, BUTTON_CALL_DOWN));
             elevator_FSM_set_direction(DIRN_DOWN);
-        } else if ((elev_get_floor_sensor_signal() == 0) && !(orders_get(0, BUTTON_CALL_UP)) && elevator_FSM_get_direction() == DIRN_DOWN) {
+        } else if ((elev_get_floor_sensor_signal() == 0) && !(orders_get_order(0, BUTTON_CALL_UP)) && elevator_FSM_get_direction() == DIRN_DOWN) {
             elevator_FSM_set_direction(DIRN_UP);
         }
 

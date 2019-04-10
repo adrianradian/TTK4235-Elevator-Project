@@ -4,6 +4,8 @@
 
 elevatorStruct elevator;
 
+elev_button_type_t elevator_FSM_direction_to_button_type(elev_motor_direction_t input);
+
 bool order_exists_above();
 
 bool order_exists_below();

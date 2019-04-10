@@ -1,5 +1,9 @@
 #include "timer.h"
 
+time_t timer_get_time_start();
+
+timer_struct timer;
+
 void timer_reset(){
 	timer.time_start = 0;
 	timer.time_elapsed = 0;

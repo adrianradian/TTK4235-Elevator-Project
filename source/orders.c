@@ -18,7 +18,7 @@ void orders_clear_floor_orders(int floor){
 	}
 }
 
-bool orders_get(int floor, elev_button_type_t direction){
+bool orders_get_order(int floor, elev_button_type_t direction){
 	return (orders[floor][(int)BUTTON_COMMAND] || orders[floor][(int)direction]);
 }
 
