@@ -5,6 +5,8 @@
 #define INCLUDE_BOOL
 #endif
 
+/*! \file
+	\brief Module for functions and data structures pertaining to timer functionality*/
 
 /** \struct timer_struct
 	\brief Struct representing the timer*/

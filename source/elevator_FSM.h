@@ -25,6 +25,9 @@
 
 typedef enum{Idle = 0, Moving = 1, DoorOpen = 2} state;
 
+/*! \file
+	\brief Module for data structures and functions pertaining to the FSM representation of the elevator*/
+
 /** \struct elevatorStruct
 	\brief A struct which works as the internal FSM representation of the elevator*/
 typedef struct{
