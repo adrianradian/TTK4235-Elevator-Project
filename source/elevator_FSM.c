@@ -50,10 +50,10 @@ void elevator_FSM_init(){
 
 bool elevator_FSM_order_exists_in_same_dir(){
 	for(int i = 0; i < 4; ++i){
-		if(elevator.floor < i && elevator.motor_direction == DIRN_UP && orders_get(i, BUTTON_CALL_UP)){
+		if(elevator.floor < i && elevator.motor_direction == DIRN_UP && orders_get_order(i, BUTTON_CALL_UP)){
 			return true;
 		}
-		if(elevator.floor > i && elevator.motor_direction == DIRN_DOWN && orders_get(i, BUTTON_CALL_DOWN)){
+		if(elevator.floor > i && elevator.motor_direction == DIRN_DOWN && orders_get_order(i, BUTTON_CALL_DOWN)){
 			return true;
 		}
 	}
@@ -62,7 +62,7 @@ bool elevator_FSM_order_exists_in_same_dir(){
 
 bool elevator_FSM_should_stop(){
 	if(elev_get_floor_sensor_signal() != -1){
-		if(orders_get(elev_get_floor_sensor_signal(),elevator_FSM_direction_to_button_type(elevator_FSM_get_direction()))){
+		if(orders_get_order(elev_get_floor_sensor_signal(),elevator_FSM_direction_to_button_type(elevator_FSM_get_direction()))){
 			printf("elevator_should_stop gikk av på naivt tilfelle\n");
 			return true;
 		}else{
@@ -91,7 +91,7 @@ bool elevator_FSM_should_stop(){
 
 elev_motor_direction_t elevator_FSM_direction_of_order(){
 	for(int i = 0; i < 4; ++i){
-		if(orders_get(i, BUTTON_CALL_UP) || orders_get(i, BUTTON_CALL_DOWN)){
+		if(orders_get_order(i, BUTTON_CALL_UP) || orders_get_order(i, BUTTON_CALL_DOWN)){
 			if(i < elevator.floor){
 				return DIRN_DOWN;
 			} else if(i > elevator.floor){
@@ -129,7 +129,7 @@ bool order_exists_above(){
 		return false;
 	}
 	for(int i = elev_get_floor_sensor_signal() + 1; i < 4; i++){
-		if(orders_get(i, BUTTON_CALL_DOWN) || orders_get(i, BUTTON_CALL_UP)){
+		if(orders_get_order(i, BUTTON_CALL_DOWN) || orders_get_order(i, BUTTON_CALL_UP)){
 			return true;
 		}
 	}
@@ -141,7 +141,7 @@ bool order_exists_below(){
 		return false;
 	}
 	for(int i = elev_get_floor_sensor_signal() - 1; i > -1; i--){
-		if(orders_get(i, BUTTON_CALL_DOWN) || orders_get(i, BUTTON_CALL_UP)){
+		if(orders_get_order(i, BUTTON_CALL_DOWN) || orders_get_order(i, BUTTON_CALL_UP)){
 			return true;
 		}
 	}

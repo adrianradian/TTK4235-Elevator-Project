@@ -8,7 +8,6 @@
 #define INCLUDE_BOOL
 #endif
 
-
 /** \brief Clears all existing entries in orders-matrix. Also works as the initializing method for the orders-matrix*/
 void orders_clear_all();
 
