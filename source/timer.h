@@ -5,10 +5,14 @@
 #define INCLUDE_BOOL
 #endif
 
-/*! \file
+/** \file
 	\brief Module for functions and data structures pertaining to timer functionality*/
 
-/** \struct timer_struct
+/** \defgroup Timer
+	\brief Module for functions and data structures pertaining to timer functionality*/
+
+/** \ingroup Timer
+	\struct timer_struct
 	\brief Struct representing the timer*/
 typedef struct {
 	time_t time_elapsed;
@@ -16,17 +20,22 @@ typedef struct {
 	bool is_timer_started;
 } timer_struct;
 
-/** \brief Method for stopping and resetting the timer. Also works as initializing function*/
+/** \ingroup Timer
+	\brief Method for stopping and resetting the timer. Also works as initializing function*/
 void timer_reset();
 
-/** \brief Method for starting the timer*/
+/** \ingroup Timer
+	\brief Method for starting the timer*/
 void timer_start();
 
-/** \brief Method for updating the timer*/
+/** \ingroup Timer
+	\brief Method for updating the timer*/
 void timer_update();
 
-/** \brief Getter-function for time elapsed since timer was started*/
+/** \ingroup Timer
+	\brief Getter-function for time elapsed since timer was started*/
 time_t timer_get_time_elapsed();
 
-/** \brief Method returning a bool signifying whether the timer is currently running*/
+/** \ingroup Timer
+	\brief Method returning a bool signifying whether the timer is currently running*/
 bool timer_get_is_timer_started();
