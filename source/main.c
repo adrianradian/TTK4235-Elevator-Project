@@ -77,7 +77,6 @@ int main() {
                 if(orders_exist()){
                     elevator_FSM_set_direction(elevator_FSM_direction_of_order());
                     if(elevator_FSM_get_direction() == DIRN_STOP){
-                        orders_clear_floor_orders(elevator_FSM_get_floor());
                         elevator_FSM_set_state(DoorOpen);
                     } else{
                         elevator_FSM_set_state(Moving);
@@ -89,19 +88,19 @@ int main() {
                     elevator_FSM_set_floor(elev_get_floor_sensor_signal());
                     elevator_FSM_set_direction(DIRN_STOP);
                     elev_set_floor_indicator(elevator_FSM_get_floor());
+                    elevator_FSM_set_state(DoorOpen);
+                    elev_set_door_open_lamp(1);
+                }
+                break;
+            case DoorOpen:
+                if(!timer_get_is_timer_started() || orders_get_order(elevator_FSM_get_floor(), BUTTON_CALL_UP) || orders_get_order(elevator_FSM_get_floor(), BUTTON_CALL_DOWN)){
+                    timer_start();
                     orders_clear_floor_orders(elevator_FSM_get_floor());
                     for(int i = 0; i < 3; i++){
                         if(!(elevator_FSM_get_floor() == 0 && i == BUTTON_CALL_DOWN) && !(elevator_FSM_get_floor() == 3 && i == BUTTON_CALL_UP)){
                             elev_set_button_lamp(i,elevator_FSM_get_floor(),0);
                         }
                     }
-                    elevator_FSM_set_state(DoorOpen);
-                    elev_set_door_open_lamp(1);
-                }
-                break;
-            case DoorOpen:
-                if(!timer_get_is_timer_started()){
-                    timer_start();
                 }
                 timer_update();
                 if(timer_get_time_elapsed() >= 3){
