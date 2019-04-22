@@ -84,10 +84,12 @@ int main() {
                 }
                 break;
             case Moving:
-                if (elevator_FSM_should_stop()){
+                if (elev_get_floor_sensor_signal() != -1){
                     elevator_FSM_set_floor(elev_get_floor_sensor_signal());
-                    elevator_FSM_set_direction(DIRN_STOP);
                     elev_set_floor_indicator(elevator_FSM_get_floor());
+                }
+                if (elevator_FSM_should_stop()){
+                    elevator_FSM_set_direction(DIRN_STOP);
                     elevator_FSM_set_state(DoorOpen);
                 }
                 break;
