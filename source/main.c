@@ -89,7 +89,6 @@ int main() {
                     elevator_FSM_set_direction(DIRN_STOP);
                     elev_set_floor_indicator(elevator_FSM_get_floor());
                     elevator_FSM_set_state(DoorOpen);
-                    elev_set_door_open_lamp(1);
                 }
                 break;
             case DoorOpen:
@@ -101,6 +100,7 @@ int main() {
                             elev_set_button_lamp(i,elevator_FSM_get_floor(),0);
                         }
                     }
+                    elev_set_door_open_lamp(1);
                 }
                 timer_update();
                 if(timer_get_time_elapsed() >= 3){
