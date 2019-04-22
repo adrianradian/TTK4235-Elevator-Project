@@ -1,5 +1,9 @@
 #include "elev.h"
-#include <stdio.h>
+
+#ifndef INCLUDE_IO
+#include"io.h"
+#define INCLUDE_IO
+#endif
 
 #ifndef INCLUDE_ORDERS
 #include"orders.h"
