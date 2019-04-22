@@ -1,4 +1,5 @@
 #include "elev.h"
+#include <stdio.h>
 
 #ifndef INCLUDE_IO
 #include"io.h"
