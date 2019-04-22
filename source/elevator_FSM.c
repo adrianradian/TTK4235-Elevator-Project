@@ -1,5 +1,4 @@
 #include"elevator_FSM.h"
-#include<stdio.h>
 #include<assert.h>
 
 elevatorStruct elevator;
@@ -24,7 +23,6 @@ elev_motor_direction_t elevator_FSM_get_direction(){
 
 void elevator_FSM_set_floor(int floor_in){
 	if (floor_in < 0 || floor_in > 3){
-		printf("HER SKJER FEILEN!!!!!!!!!!\n");
 		return;
 	}
 	elevator.floor = floor_in;
@@ -36,7 +34,6 @@ void elevator_FSM_set_state(state state_in){
 
 void elevator_FSM_set_direction(elev_motor_direction_t direction_in){
 	elevator.motor_direction = direction_in;
-	printf("retning er %d inni elev_set_direction\n", elevator.motor_direction);
 	elev_set_motor_direction(elevator.motor_direction);
 }
 
@@ -63,19 +60,16 @@ bool elevator_FSM_order_exists_in_same_dir(){
 bool elevator_FSM_should_stop(){
 	if(elev_get_floor_sensor_signal() != -1){
 		if(orders_get_order(elev_get_floor_sensor_signal(),elevator_FSM_direction_to_button_type(elevator_FSM_get_direction()))){
-			printf("elevator_should_stop gikk av på naivt tilfelle\n");
 			return true;
 		}else{
 			switch(elevator_FSM_get_direction()){
 				case DIRN_UP:
 				if(!order_exists_above()){
-					printf("elevator_should_stop gikk av på dirn_up\n");
 					return true;
 				}
 				break;
 				case DIRN_DOWN:
 				if(!order_exists_below()){
-					printf("elevator_should_stop gikk av på dirn_down\n");
 					return true;
 				}
 				break;
