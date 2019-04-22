@@ -20,7 +20,6 @@ void timer_update(){
 	timer.time_elapsed = time(NULL) - timer.time_start;
 }
 
-
 time_t timer_get_time_start(){
 	return timer.time_start;
 }
@@ -32,8 +31,3 @@ time_t timer_get_time_elapsed(){
 bool timer_get_is_timer_started(){
 	return timer.is_timer_started;
 }
-
-/*time_t timer_get_threshold_time(){
-	return timer_threshold_time;
-}
-*/
