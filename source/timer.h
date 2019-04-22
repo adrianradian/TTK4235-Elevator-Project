@@ -13,7 +13,7 @@
 
 /** \ingroup Timer
 	\struct timer_struct
-	\brief Struct representing the timer*/
+	\brief A struct which represents the timer*/
 typedef struct {
 	time_t time_elapsed;
 	time_t time_start;
